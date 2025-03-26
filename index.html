@@ -32,19 +32,18 @@
     </div>
     
     <script>
-        const API_KEY = 'acec1a860c57489ca9082102232011';  // Replace with your OpenWeatherMap API key
+        const API_KEY = 'acec1a860c57489ca9082102232011';  // Replace with your WeatherAPI.com key
         const CITY = 'Tampere';
         
         async function fetchWeather() {
             try {
-                const API_URL = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=metric&appid=${API_KEY}`)}`;
+                const API_URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${CITY}&aqi=no`;
                 const response = await fetch(API_URL);
-                const json = await response.json();
-                const data = JSON.parse(json.contents); // Extract actual data
+                const data = await response.json();
                 
-                document.getElementById('temperature').textContent = `${Math.round(data.main.temp)} °C`;
-                document.getElementById('weather-description').textContent = data.weather[0].description;
-                document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+                document.getElementById('temperature').textContent = `${Math.round(data.current.temp_c)} °C`;
+                document.getElementById('weather-description').textContent = data.current.condition.text;
+                document.getElementById('weather-icon').src = `https:${data.current.condition.icon}`;
             } catch (error) {
                 console.error('Error fetching weather data:', error);
                 document.getElementById('weather-description').textContent = 'Failed to load weather data';
