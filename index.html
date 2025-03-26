@@ -32,13 +32,15 @@
     </div>
     
     <script>
-        const API_KEY = 'YOUR_API_KEY';  // Replace with your API key
+        const API_KEY = 'YOUR_API_KEY';  // Replace with your OpenWeatherMap API key
         const CITY = 'Tampere';
         
         async function fetchWeather() {
             try {
-                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=metric&appid=${API_KEY}`);
-                const data = await response.json();
+                const API_URL = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=metric&appid=${API_KEY}`)}`;
+                const response = await fetch(API_URL);
+                const json = await response.json();
+                const data = JSON.parse(json.contents); // Extract actual data
                 
                 document.getElementById('temperature').textContent = `${Math.round(data.main.temp)} °C`;
                 document.getElementById('weather-description').textContent = data.weather[0].description;
