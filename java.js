@@ -1,12 +1,16 @@
-/*
-Inspired from the design made by 'Teodora':
-https://www.webdesignerforum.co.uk/files/file/63-free-psd-cv-template/
-https://dribbble.com/shots/1141520-PSD-CV-template?list=searches&offset=17
+const API_URL = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=metric&appid=${API_KEY}`)}`;
 
-Dark-wall pattern: https://subtlepatterns.com/dark-wall/
+async function fetchWeather() {
+    try {
+        const response = await fetch(API_URL);
+        const json = await response.json();
+        const data = JSON.parse(json.contents); // Extract actual data
 
-Lato Font: https://www.google.com/fonts/specimen/Lato
-
-We love font icons: http://weloveiconfonts.com/
-
-*/
+        document.getElementById('temperature').textContent = `${Math.round(data.main.temp)} °C`;
+        document.getElementById('weather-description').textContent = data.weather[0].description;
+        document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+        document.getElementById('weather-description').textContent = 'Failed to load weather data';
+    }
+}
